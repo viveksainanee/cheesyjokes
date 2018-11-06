@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import Joke from './Joke';
+import './JokeDad.css';
+
 import axios from 'axios';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faSpinner);
 
 class JokeDad extends Component {
   constructor(props) {
@@ -18,9 +25,9 @@ class JokeDad extends Component {
     try {
       let response = [];
 
-      for (let i = 0; i < 10; i++) {
+      while (response.length < 10) {
         response.push(
-          axios({
+          await axios({
             url: 'https://icanhazdadjoke.com',
             method: 'get',
             headers: { Accept: 'application/json' }
@@ -28,9 +35,10 @@ class JokeDad extends Component {
         );
       }
 
-      let resolvedPromises = await Promise.all(response);
+      // let resolvedPromises = await Promise.all(response);
+      console.log(response);
 
-      let jokesArr = resolvedPromises.map(promise => promise.data);
+      let jokesArr = response.map(promise => promise.data);
 
       jokesArr.forEach(jokeObj => {
         jokeObj.up = 0;
@@ -74,7 +82,15 @@ class JokeDad extends Component {
         decrement={this.decrement}
       />
     ));
-    return <div>{this.state.isLoading ? 'HOLD YO HORSES' : jokeList}</div>;
+    return (
+      <div>
+        {this.state.isLoading ? (
+          <FontAwesomeIcon icon="spinner" className="loading" />
+        ) : (
+          jokeList
+        )}
+      </div>
+    );
   }
 }
 

@@ -1,0 +1,14 @@
+.loading {
+  animation: spinner infinite 1s linear;
+  height: 40vmin;
+  font-size: 100px;
+}
+
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
